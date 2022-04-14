@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DANIM.Project.Mapper.BoardMapper">
+
+<sql id="boardColumns">
+	  RB_UQ
+	, RB_Title
+	, RB_Contents
+	, User_ID
+	, RB_Img
+	, RB_View
+	, RB_Count
+	, RB_Report
+	, RB_Created
+
+</sql>
+
+<insert id="insertBoard" parameterType="DANIM.Project.Dto.BoardDTO">
+	INSERT INTO review_board (
+	<include refid="boardColumns" />) 
+	 VALUES (
+	  #{RB_UQ}
+	, #{RB_Title}
+	, #{RB_Contents}
+	, #{User_ID}
+	, NULL
+	, 0
+	, 0
+	, 0
+	, NOW()
+	)
+</insert>
+
+<select id="selectBoardDetail" parameterType="Long"
+	resultType="DANIM.Project.Dto.BoardDTO">
+	SELECT
+	<include refid="boardColumns" />
+	FROM
+	review_board
+	WHERE
+	RB_UQ = #{RB_UQ}
+</select>
+
+<select id="select" resultType="Long">
+SELECT max(RB_UQ)
+FROM
+review_board
+
+</select>
+
+
+<update id="updateBoard" parameterType="DANIM.Project.Dto.BoardDTO">
+	UPDATE review_board
+	SET
+	RB_Created = NOW()
+	, RB_Title = #{RB_Title}
+	, RB_Contents = #{RB_Contents}
+	WHERE
+	RB_UQ = #{RB_UQ}
+</update>
+
+<delete id="deleteBoard" parameterType="Long">
+	DELETE
+	FROM review_board
+	WHERE
+	RB_UQ = #{RB_UQ}
+</delete>
+
+<select id="selectBoardList" parameterType="DANIM.Project.Dto.BoardDTO"
+	resultType="DANIM.Project.Dto.BoardDTO">
+	<![CDATA[
+	SELECT
+	*
+	FROM
+	review_board
+	WHERE
+	RB_UQ
+	ORDER BY
+	RB_UQ DESC,
+	RB_Created DESC
+	LIMIT #{pageStart}, #{perPageNum}
+	  ]]>
+</select>
+
+<select id="selectSearchList" parameterType="DANIM.Project.Dto.BoardDTO" resultType="DANIM.Project.Dto.BoardDTO">
+	SELECT
+	*
+	FROM
+	review_board
+	<choose>
+		<when test="type !=null and type.equals('RB_Title')">
+		AND RB_Title LIKE CONCAT('%', #{keyword}, '%')
+		</when>
+		<when test="type !=null and type.equals('RB_Contents')">
+		AND RB_Contents LIKE CONCAT('%', #{keyword}, '%')
+		</when>
+	</choose>
+
+</select>
+
+<update id="updateView" parameterType="DANIM.Project.Dto.BoardDTO">
+UPDATE review_board
+SET
+RB_View = RB_View+1
+WHERE RB_UQ = #{RB_UQ}
+</update>
+
+<select id="boardListCnt" resultType="int">
+        SELECT count(*)
+        FROM review_board
+</select>
+
+</mapper>

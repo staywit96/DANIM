@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DANIM.Project.Mapper.FreeMapper">
+
+<sql id="boardColumns">
+	  FB_UQ
+	, FB_Title
+	, FB_Contents
+	, User_ID
+	, FB_Img
+	, FB_View
+	, FB_Comment_Count
+	, FB_Report
+	, FB_Date_Created
+
+</sql>
+
+<insert id="insertBoard" parameterType="DANIM.Project.Dto.FreeDTO">
+	INSERT INTO free_board (
+	<include refid="boardColumns" />
+	) VALUES (
+	  #{FB_UQ}
+	, #{FB_Title}
+	, #{FB_Contents}
+	, #{User_ID}
+	, NULL
+	, 0
+	, 0
+	, 0
+	, NOW()
+	)
+</insert>
+
+<select id="selectBoardDetail" parameterType="long"
+	resultType="DANIM.Project.Dto.FreeDTO">
+	SELECT
+	<include refid="boardColumns" />
+	FROM
+	free_board
+	WHERE
+	FB_UQ = #{FB_UQ}
+</select>
+
+<select id="selectfree" resultType="Long">
+SELECT max(FB_UQ)
+FROM
+free_board
+</select>
+
+<update id="updateBoard" parameterType="DANIM.Project.Dto.FreeDTO">
+	UPDATE free_board
+	SET
+	FB_Date_Created = NOW()
+	, FB_Title = #{FB_Title}
+	, FB_Contents = #{FB_Contents}
+	, User_ID = #{User_ID}
+	WHERE
+	FB_UQ = #{FB_UQ}
+</update>
+
+<update id="updateView" parameterType="DANIM.Project.Dto.FreeDTO">
+UPDATE free_board
+SET
+FB_View = FB_View+1
+WHERE FB_UQ = #{FB_UQ}
+</update>
+
+<delete id="deleteBoard" parameterType="Long">
+	DELETE
+	FROM free_board
+	WHERE
+	FB_UQ = #{FB_UQ}
+</delete>
+
+<select id="selectBoardList"
+	resultType="DANIM.Project.Dto.FreeDTO">
+	<![CDATA[
+	SELECT
+	*
+	FROM
+	free_board
+	ORDER BY
+	FB_UQ DESC,
+	FB_Date_Created DESC
+	LIMIT #{pageStart}, #{perPageNum}
+	  ]]>
+</select>
+
+<select id="boardListCnt" resultType="int">
+        SELECT count(*)
+        FROM free_board
+</select>
+
+<select id="getData" resultType="java.lang.String">
+	Select * from free_board
+</select>
+
+</mapper>

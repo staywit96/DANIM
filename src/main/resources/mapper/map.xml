@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DANIM.Project.Dao.MapDAO">
+   <resultMap id="mapResult" type="mapVO">
+      <result property="placeID" column="placeID" />
+      <result property="place_name" column="place_name" />
+      <result property="address_name" column="address_name" />
+      <result property="phone" column="phone" />
+      <result property="x" column="x" />
+      <result property="y" column="y" />
+   </resultMap> 
+ 
+   <insert id="insertMap"  parameterType="mapVO">
+		<![CDATA[
+		 insert into t_map(placeID, placeName, addressName, phone, x, y)
+		 values(#{placeID}, #{placeName}, #{addressName}, #{phone}, #{x}, #{y})
+		]]>      
+	</insert>
+	
+	<select id="checkMap" resultType="int" parameterType="String">
+		<![CDATA[
+		 select exists(select * from t_map where placeID = #{placeID})
+		]]> 
+	</select>
+   
+</mapper>

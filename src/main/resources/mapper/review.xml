@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="DANIM.Project.Dao.ReviewDAO">
+	<resultMap id="revResult" type="reviewVO">
+      <result property="reviewID" column="reviewID" />
+      <result property="placeID" column="placeID" />
+      <result property="rating" column="rating" />
+      <result property="review" column="review"/>
+      <result property="id" column="id"/>
+      <result property="writedate" column="writedate" />
+      <result property="moddate" column="moddate"/>
+   </resultMap> 
+
+   <select id="selectAllReviewList" resultMap="revResult" parameterType="String">
+		<![CDATA[
+			  SELECT * FROM m_comment WHERE placeID = #{placeID} ORDER BY writedate DESC
+		]]>  
+	</select>
+	
+	<insert id="insertReview" parameterType="reviewVO">
+		<![CDATA[
+			 INSERT INTO m_comment(reviewID,placeID,rating,review,id) 
+			 VALUES (#{reviewID},#{placeID},#{rating},#{review},#{id})
+		]]>
+	</insert>
+	
+	<delete id="deleteReview" parameterType="int">
+		<![CDATA[
+			 DELETE FROM m_comment WHERE reviewID = #{reviewID}
+		]]>
+	</delete>
+	
+	<update id="updateReview" parameterType="reviewVO">
+		<![CDATA[
+			UPDATE m_comment 
+			SET rating=#{rating},review=#{review},moddate=current_date
+			WHERE reviewID=#{reviewID}
+		]]>
+	</update>
+	
+	<update id="updateLikesState" parameterType="int">
+		<![CDATA[
+			
+		]]>
+	</update>
+	
+	<select id="maxReviewNum" resultType="int">
+		<![CDATA[
+			SELECT IFNULL(max(reviewID),0) FROM m_comment
+		]]>
+	</select>
+	
+	<select id="existsReview" resultType="int" parameterType="reviewVO">
+		<![CDATA[
+			SELECT EXISTS(SELECT id FROM m_comment where placeID=#{placeID} AND id=#{id}) as chk;
+		]]>
+	</select>
+	
+	<select id="avgRatings" resultType="float" parameterType="String">
+		<![CDATA[
+			SELECT IFNULL(avg(rating),-1) FROM m_comment WHERE placeID=#{placeID}
+		]]>
+	</select>
+   
+</mapper>

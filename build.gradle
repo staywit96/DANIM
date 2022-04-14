@@ -1,0 +1,53 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'DANIM'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	
+	//javax, 롬복
+	implementation 'javax.servlet:jstl:1.2'
+	implementation 'org.projectlombok:lombok'
+	
+	// 수업 공통
+    implementation 'org.apache.tiles:tiles-jsp:3.0.5'
+	implementation 'org.apache.tiles:tiles-servlet:3.0.5'
+	implementation 'org.apache.tiles:tiles-core:3.0.5'
+	implementation 'org.apache.tiles:tiles-api:3.0.5'
+	implementation 'org.apache.tiles:tiles-el:3.0.5'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+	implementation 'commons-io:commons-io:2.4'
+	
+	// mysql DB
+	runtimeOnly 'mysql:mysql-connector-java'
+	
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

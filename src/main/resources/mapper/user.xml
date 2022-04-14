@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ID PW 추가  -->
+<mapper namespace="DANIM.Project.Mapper.UserMapper">
+
+    <select id="selectUsers" resultType="hashMap">
+        select * from user
+    </select>
+    
+	<insert id="userSave">
+		INSERT INTO `user` (userId, password, mail, name, nickname, phone)
+	   
+	    VALUES(#{userId}, #{password1}, #{mail}, #{name}, #{nickname}, #{phone});		
+	</insert>
+	
+	<select id="getByUserIdAndPassword"  resultType="Map">
+		select * from user where userId=#{userId} AND password=#{password}
+	</select>
+	
+	<!-- 추가 id, password 찾기 패스워드 변경하기 	<select id="findPassword" resultType="user">
+		select * from user where userId=#{userId} and name=#{name} and phone=#{phone}
+	</select>
+	<update id="updatePassword" >
+		update user set password=#{password1} where userId=#{userId}
+	</update>
+		<select id="findId" resultType="UserDTO">
+		select * from user where name=#{name} and mail=#{mail}
+	</select>
+	
+	 name 값 파라미터 지정해주기
+	 -->
+	
+
+
+	
+	
+
+</mapper>
